@@ -1,25 +1,22 @@
-import com.epam.reportportal.service.ReportPortal
-import junit.framework.Assert.assertTrue
-import org.junit.After
-import org.junit.AfterClass
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
+import com.epam.reportportal.junit5.ReportPortalExtension
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.LoggerFactory
-import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
 
 /**
  * Unit test for simple App.
  */
+@ExtendWith(ReportPortalExtension::class)
 class DummyTest {
-	@Before
-	@Throws(InterruptedException::class)
-	fun before() {
-		LOGGER.info("Inside Dummy before " + BEFORE_COUNTER.incrementAndGet())
-		Thread.sleep(100)
-	}
+//	@Before
+//	@Throws(InterruptedException::class)
+//	fun before() {
+//		LOGGER.info("Inside Dummy before " + BEFORE_COUNTER.incrementAndGet())
+//		Thread.sleep(100)
+//	}
 
 	//	@Test
 //	@Throws(IOException::class)
@@ -38,13 +35,12 @@ class DummyTest {
 //
 	@Test
 	fun test2() {
-		ReportPortal.emitLaunchLog("LAUNCH LOG MESAGE", "error", Date())
+//		ReportPortal.emitLaunchLog("LAUNCH LOG MESAGE", "error", Date())
 
 		LOGGER.info("Dummy test 2 started")
-		assertTrue(true)
 	}
 
-	@After
+	@AfterEach
 	@Throws(InterruptedException::class)
 	fun after() {
 		LOGGER.info("Inside Dummy after " + AFTER_COUNTER.incrementAndGet())
@@ -56,18 +52,18 @@ class DummyTest {
 		private val BEFORE_COUNTER = AtomicInteger()
 		private val AFTER_COUNTER = AtomicInteger()
 
-		@BeforeClass
-		@Throws(InterruptedException::class)
-		fun beforeClass() {
-			LOGGER.info("Inside Dummy beforeClass")
-			Thread.sleep(100)
-		}
-
-		@AfterClass
-		@Throws(InterruptedException::class)
-		fun afterClass() {
-			LOGGER.info("Inside Dummy afterClass")
-			Thread.sleep(100)
-		}
+//		@BeforeClass
+//		@Throws(InterruptedException::class)
+//		fun beforeClass() {
+//			LOGGER.info("Inside Dummy beforeClass")
+//			Thread.sleep(100)
+//		}
+//
+//		@AfterClass
+//		@Throws(InterruptedException::class)
+//		fun afterClass() {
+//			LOGGER.info("Inside Dummy afterClass")
+//			Thread.sleep(100)
+//		}
 	}
 }

@@ -1,7 +1,3 @@
-plugins {
-	id 'org.jetbrains.kotlin.jvm' version '1.3.72'
-}
-
 group 'reportportal-kotlin-example'
 version '1.0.0'
 
@@ -14,30 +10,74 @@ repositories {
 	maven { url "http://dl.bintray.com/epam/reportportal" }
 }
 
+buildscript {
+	repositories {
+		mavenCentral()
+		jcenter()
+		google()
+		maven { url "https://kotlin.bintray.com/kotlinx" }
+		maven { url 'https://jitpack.io' }
+		maven { url "http://dl.bintray.com/epam/reportportal" }
+	}
+
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
+	}
+}
+
+apply plugin: "kotlin"
+
 dependencies {
-	implementation "org.jetbrains.kotlin:kotlin-stdlib"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
 
-	// Note that agent-java-junit brings in JUnit 4.12 and the JUnit Foundation library as transitive dependencies,
-	// so these don't need to be declared explicitly in your project.
-	testImplementation "com.epam.reportportal:agent-java-junit:5.0.0-BETA-11"
-	testImplementation "com.epam.reportportal:logger-java-logback:5.0.2"
+	implementation("com.epam.reportportal:agent-java-junit5:5.0.0-RC-1")
+//			{
+//		exclude group: 'org.aspectj', module: 'aspectjrt'
+//	}
+	implementation("com.epam.reportportal:logger-java-logback:5.0.2")
+//			{
+//		exclude group: 'org.aspectj', module: 'aspectjrt'
+//	}
+	implementation 'ch.qos.logback:logback-classic:1.2.3'
 
-	testImplementation "ch.qos.logback:logback-classic:1.2.3"
-
-	testImplementation 'com.nordstrom.tools:junit-foundation:12.2.0'
+	implementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+	implementation "org.junit.jupiter:junit-jupiter-engine:5.6.2"
+	implementation "org.junit.jupiter:junit-jupiter-params:5.6.2"
 }
 
-ext {
-	junitFoundation = configurations.compile.resolvedConfiguration.resolvedArtifacts.find { it.name == 'junit-foundation' }
-}
-
-test.doFirst {
+//ext {
+//	junitFoundation = configurations.compile.resolvedConfiguration.resolvedArtifacts.find { it.name == 'junit-foundation' }
+//}
+//
+//test.doFirst {
 //	jvmArgs "-javaagent:${junitFoundation.file}"
-}
+//}
+
+//test {
+//	useJUnitPlatform()
+//}
+
+//sourceSets {
+//	main.kotlin.srcDirs = ['src/main/kotlin', 'src/main/java']
+//	main.java.srcDirs = []
+//	test.kotlin.srcDirs = ['src/test/kotlin', 'src/test/java']
+//	test.java.srcDirs = ['src/test/kotlin', 'src/test/java']
+//}
 
 test {
-	useJUnitPlatform()
-	testLogging.showStandardStreams = true
+	useJUnitPlatform() {
+//		testClassesDirs = sourceSets.test.output.classesDirs
+//		classpath = sourceSets.test.runtimeClasspath
+
+		// show standard out and standard error of the test JVM(s) on the console
+		testLogging.showStandardStreams = true
+//		include '**/*.*'
+
+		// listen to events in the test execution lifecycle
+		beforeTest { descriptor ->
+			logger.lifecycle("Running test: " + descriptor)
+		}
+	}
 }
 
 compileKotlin {
