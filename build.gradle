@@ -1,0 +1,48 @@
+plugins {
+	id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+}
+
+group 'reportportal-kotlin-example'
+version '1.0.0'
+
+repositories {
+	mavenCentral()
+	jcenter()
+	google()
+	maven { url "https://kotlin.bintray.com/kotlinx" }
+	maven { url 'https://jitpack.io' }
+	maven { url "http://dl.bintray.com/epam/reportportal" }
+}
+
+dependencies {
+	implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+	// Note that agent-java-junit brings in JUnit 4.12 and the JUnit Foundation library as transitive dependencies,
+	// so these don't need to be declared explicitly in your project.
+	testImplementation "com.epam.reportportal:agent-java-junit:5.0.0-BETA-11"
+	testImplementation "com.epam.reportportal:logger-java-logback:5.0.2"
+
+	testImplementation "ch.qos.logback:logback-classic:1.2.3"
+
+	testImplementation 'com.nordstrom.tools:junit-foundation:12.2.0'
+}
+
+ext {
+	junitFoundation = configurations.compile.resolvedConfiguration.resolvedArtifacts.find { it.name == 'junit-foundation' }
+}
+
+test.doFirst {
+//	jvmArgs "-javaagent:${junitFoundation.file}"
+}
+
+test {
+	useJUnitPlatform()
+	testLogging.showStandardStreams = true
+}
+
+compileKotlin {
+	kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+	kotlinOptions.jvmTarget = "1.8"
+}
